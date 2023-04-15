@@ -63,36 +63,11 @@ public class TruckControllerTest {
 
 
     @Test
-    public void testAmazonInit() {
-
-    }
-
-    @Test
-    public void testSendAndReceiveMessages() {
+    public void testAmazonInit(){
         String worldServerIP = "vcm-32197.vm.duke.edu";
-        int worldServerPort = 12345;
         int amazonServerPort = 23456;
 
         try {
-            Socket socket = new Socket(worldServerIP, worldServerPort);
-            TruckController truckController = new TruckController(socket);
-
-
-            TruckReceiver truckReceiver = truckController.truckReceiver;
-
-            // Send UConnect message
-            truckController.sendUConnect(null, 5);
-
-            // Receive UConnected message
-            truckController.getUConnected();
-            String result = truckController.getUConnectedResult();
-
-            // Check if UConnected message contains expected values
-            assertEquals("connected!", result);
-            System.out.println("UConnected received successfully");
-
-
-
             // Amazon init whId ================
             WorldAmazon.AConnect.Builder builder = WorldAmazon.AConnect.newBuilder();
             builder.setWorldid(1);
@@ -117,12 +92,37 @@ public class TruckControllerTest {
 
             assertEquals("connected!", aConnected.toBuilder().getResult());
             System.out.println("AConnected successfully");
-            //===================================
 
 
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail("An exception occurred during the test.");
+        }
+    }
 
 
+    @Test
+    public void testUpsInit() {
+        String worldServerIP = "vcm-32197.vm.duke.edu";
+        int worldServerPort = 12345;
 
+        try {
+            Socket socket = new Socket(worldServerIP, worldServerPort);
+            TruckController truckController = new TruckController(socket);
+
+
+            TruckReceiver truckReceiver = truckController.truckReceiver;
+
+            // Send UConnect message
+            truckController.sendUConnect(null, 5);
+
+            // Receive UConnected message
+            truckController.getUConnected();
+            String result = truckController.getUConnectedResult();
+
+            // Check if UConnected message contains expected values
+            assertEquals("connected!", result);
+            System.out.println("UConnected received successfully");
 
 
 

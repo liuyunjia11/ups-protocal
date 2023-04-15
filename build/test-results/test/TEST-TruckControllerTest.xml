@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TruckControllerTest" tests="2" skipped="0" failures="1" errors="0" timestamp="2023-04-15T20:40:11" hostname="Yuguos-MacBook-Air.local" time="6.303">
+<testsuite name="TruckControllerTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2023-04-15T23:31:22" hostname="Yuguos-MacBook-Air.local" time="6.171">
   <properties/>
-  <testcase name="testAmazonInit()" classname="TruckControllerTest" time="0.01"/>
-  <testcase name="testSendAndReceiveMessages()" classname="TruckControllerTest" time="6.293">
+  <testcase name="testSendAndReceiveMessages()" classname="TruckControllerTest" time="6.171">
     <failure message="org.opentest4j.AssertionFailedError: expected: &lt;1&gt; but was: &lt;0&gt;" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: expected: &lt;1&gt; but was: &lt;0&gt;
 	at app//org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at app//org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -10,7 +9,7 @@
 	at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
 	at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145)
 	at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:528)
-	at app//TruckControllerTest.testSendAndReceiveMessages(TruckControllerTest.java:148)
+	at app//TruckControllerTest.testSendAndReceiveMessages(TruckControllerTest.java:152)
 	at java.base@11.0.18/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base@11.0.18/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base@11.0.18/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -98,19 +97,18 @@
 </failure>
   </testcase>
   <system-out><![CDATA[UConnected received successfully
-AConnected successfully
 Pickup UCommands sent
 acks: 1
 error {
-  err: "cannot find truck or package you specified\nPossible reasons: do not exist, not in proper status or not in the same warehouse!"
+  err: "error: warehouse id/product_id/package id/truck id in certain world and warehouse(if product_id) does not exist"
   originseqnum: 1
-  seqnum: 1
+  seqnum: 2
 }
 
 UResponses received
 ]]></system-out>
   <system-err><![CDATA[java.lang.NullPointerException
-	at TruckControllerTest.testSendAndReceiveMessages(TruckControllerTest.java:135)
+	at TruckControllerTest.testSendAndReceiveMessages(TruckControllerTest.java:139)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
