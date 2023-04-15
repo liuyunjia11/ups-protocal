@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.Database.TruckMapper">
+    <resultMap id="TruckResultMap" type="org.example.Database.Truck">
+        <result property="truckId" column="truckId"/>
+        <result property="status" column="status"/>
+        <result property="packageNum" column="packageNum"/>
+    </resultMap>
+
+    <select id="getTruckById" resultMap="TruckResultMap">
+        SELECT * FROM truck WHERE truckId = #{truckId}
+    </select>
+
+    <select id="getAllTrucks" resultMap="TruckResultMap">
+        SELECT * FROM truck
+    </select>
+
+    <select id="getMinPackageTruck" resultMap="TruckResultMap">
+        SELECT * FROM truck
+        WHERE status IN ('idle', 'delivering')
+        ORDER BY packageNum
+        LIMIT 1;
+    </select>
+
+    <insert id="insertTruck" parameterType="org.example.Database.Truck">
+        INSERT INTO truck (truckId, status, packageNum)
+        VALUES (#{truckId}, #{status}, #{packageNum})
+    </insert>
+
+    <update id="updateTruck" parameterType="org.example.Database.Truck">
+        UPDATE truck SET status = #{status}, packageNum = #{packageNum} WHERE truckId = #{truckId}
+    </update>
+
+    <delete id="deleteTruck">
+        DELETE FROM truck WHERE truckId = #{truckId}
+    </delete>
+</mapper>

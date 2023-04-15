@@ -1,0 +1,43 @@
+syntax = "proto2";
+
+message Login_UserController {
+  required string UpsUserid = 1;
+  required string UpsPassword = 2;
+}
+
+message Register_UserController {
+  required string UpsUserid = 1;
+  required string UpsPassword = 2;
+}
+
+message AProduct{
+  required int64 id = 1;
+  required string description = 2;
+  required int32 count = 3;
+}
+
+message UserController_Login {
+  repeated AProduct things = 1;
+}
+
+message UserController_Register {
+  required string acks = 1;
+}
+
+message TrackPackageRequest {
+  required int64 package_id = 1;
+}
+
+message TrackPackageResponse {
+  required string status = 1;
+}
+
+message UpdateDestinationRequest {
+  required int64 package_id = 1;
+  required int32 x = 2;
+  required int32 y = 3;
+}
+
+message UpdateDestinationResponse {
+  required string ack = 1;
+}
