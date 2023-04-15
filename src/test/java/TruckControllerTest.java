@@ -2,6 +2,7 @@ import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
 import com.google.protobuf.Message;
 import org.apache.ibatis.session.SqlSession;
+import org.example.Database.Packages;
 import org.example.Database.Truck;
 import org.example.Database.TruckMapper;
 import org.example.MyBatisUtil;
@@ -16,11 +17,49 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TruckControllerTest {
 
+
+//    private SqlSession sqlSession;
+//    private TruckMapper truckMapper;
+//
+//    @BeforeEach
+//    public void setUp() {
+//        sqlSession = MyBatisUtil.getSqlSession();
+//        truckMapper = sqlSession.getMapper(TruckMapper.class);
+//
+//        // 插入测试数据
+//        Truck testTruck = new Truck();
+//        testTruck.setTruckId(1);
+//        testTruck.setStatus("available");
+//        testTruck.setPackageNum(0);
+//        truckMapper.insertTruck(testTruck);
+//
+//        Packages testPackage = new Packages();
+//        testPackage.setPackageId(1);
+//        testPackage.setTruckId(1);
+//        testPackage.setUserId(String.valueOf(1));
+//        testPackage.setItemNum(2);
+//        truckMapper.insertPackage(testPackage);
+//
+//        sqlSession.commit();
+//    }
+//
+//    @AfterEach
+//    public void tearDown() {
+//        // 清除测试数据
+//        truckMapper.deleteTruckById(1);
+//        truckMapper.deletePackageById(1);
+//
+//        sqlSession.commit();
+//        sqlSession.close();
+//    }
+//
 
 
     @Test
@@ -79,6 +118,12 @@ public class TruckControllerTest {
             assertEquals("connected!", aConnected.toBuilder().getResult());
             System.out.println("AConnected successfully");
             //===================================
+
+
+
+
+
+
 
 
             // Send pickup command

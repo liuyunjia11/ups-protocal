@@ -16,8 +16,8 @@
 
     <mappers>
         <!-- Register your mapper files here -->
-        <mapper resource="src/main/resources/UserMapper.xml"/>
-        <mapper resource="src/main/resources/TruckMapper.xml"/>
-        <mapper resource="src/main/resources/PackagesMapper.xml"/>
+        <mapper resource="UserMapper.xml"/>
+        <mapper resource="TruckMapper.xml"/>
+        <mapper resource="PackagesMapper.xml"/>
     </mappers>
 </configuration>

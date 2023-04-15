@@ -18,12 +18,12 @@
         SELECT * FROM packages
     </select>
 
-    <insert id="insertPackage" parameterType="org.example.Database.Package">
+    <insert id="insertPackage" parameterType="org.example.Database.Packages">
         INSERT INTO packages (truckId, userId, "itemNum")
         VALUES (#{truckId}, #{userId}, #{itemNum})
     </insert>
 
-    <update id="updatePackage" parameterType="org.example.Database.Package">
+    <update id="updatePackage" parameterType="org.example.Database.Packages">
         UPDATE packages SET truckId = #{truckId}, userId = #{userId}, "itemNum" = #{itemNum} WHERE packageId = #{packageId}
     </update>
 

@@ -6,7 +6,7 @@
         <result property="packageId" column="packageId"/>
         <result property="truckId" column="truckId"/>
         <result property="userId" column="userId"/>
-        <result property="packageNum" column="packageNum"/>
+        <result property="itemNum" column="itemNum"/>
     </resultMap>
 
     <!-- ... -->
@@ -18,13 +18,13 @@
         SELECT * FROM packages
     </select>
 
-    <insert id="insertPackage" parameterType="org.example.Database.Package">
-        INSERT INTO packages (truckId, userId, packageNum)
-        VALUES (#{truckId}, #{userId}, #{packageNum})
+    <insert id="insertPackage" parameterType="org.example.Database.Packages">
+        INSERT INTO packages (truckId, userId, "itemNum")
+        VALUES (#{truckId}, #{userId}, #{itemNum})
     </insert>
 
-    <update id="updatePackage" parameterType="org.example.Database.Package">
-        UPDATE packages SET truckId = #{truckId}, userId = #{userId}, packageNum = #{packageNum} WHERE packageId = #{packageId}
+    <update id="updatePackage" parameterType="org.example.Database.Packages">
+        UPDATE packages SET truckId = #{truckId}, userId = #{userId}, "itemNum" = #{itemNum} WHERE packageId = #{packageId}
     </update>
 
     <delete id="deletePackage">
