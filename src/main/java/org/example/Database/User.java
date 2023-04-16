@@ -1,11 +1,15 @@
 package org.example.Database;
 
 public class User {
-    public Integer getUserId() {
+    private String userId;
+    private String password;
+
+    // Getters and setters
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -16,10 +20,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private Integer userId;
-    private String password;
-
-    // Getters and setters
 }
-

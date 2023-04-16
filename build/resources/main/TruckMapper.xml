@@ -38,16 +38,4 @@
         DELETE FROM truck WHERE truckId = #{truckId}
     </delete>
 
-
-<!--    <insert id="insertPackage" parameterType="Packages">-->
-<!--        INSERT INTO packages (packageid, truckid, userid, "itemNum") VALUES (#{packageId}, #{truckId}, #{userId}, #{itemNum})-->
-<!--    </insert>-->
-
-<!--    <delete id="deleteTruckById" parameterType="int">-->
-<!--        DELETE FROM truck WHERE truckid = #{truckId}-->
-<!--    </delete>-->
-
-<!--    <delete id="deletePackageById" parameterType="int">-->
-<!--        DELETE FROM packages WHERE packageid = #{packageId}-->
-<!--    </delete>-->
 </mapper>

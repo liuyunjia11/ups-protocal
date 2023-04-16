@@ -8,19 +8,19 @@
     </resultMap>
 
     <select id="getUserById" resultMap="UserResultMap">
-        SELECT * FROM user WHERE userId = #{userId}
+        SELECT * FROM "user" WHERE "userId" = #{userId}
     </select>
 
     <insert id="insertUser" parameterType="org.example.Database.User">
-        INSERT INTO user (userId, password)
+        INSERT INTO "user" ("userId", "password")
         VALUES (#{userId}, #{password})
     </insert>
 
     <update id="updateUser" parameterType="org.example.Database.User">
-        UPDATE user SET password = #{password} WHERE userId = #{userId}
+        UPDATE "user" SET "password" = #{password} WHERE "userId" = #{userId}
     </update>
 
     <delete id="deleteUser">
-        DELETE FROM user WHERE userId = #{userId}
+        DELETE FROM "user" WHERE "userId" = #{userId}
     </delete>
 </mapper>
