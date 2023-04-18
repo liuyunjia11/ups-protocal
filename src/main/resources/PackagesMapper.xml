@@ -19,8 +19,8 @@
     </select>
 
     <insert id="insertPackage" parameterType="org.example.Database.Packages">
-        INSERT INTO packages (truckId, userId, "itemNum")
-        VALUES (#{truckId}, #{userId}, #{itemNum})
+        INSERT INTO packages (packageId, truckId, userId, "itemNum")
+        VALUES (#{packageId}, #{truckId}, #{userId}, #{itemNum})
     </insert>
 
     <update id="updatePackage" parameterType="org.example.Database.Packages">

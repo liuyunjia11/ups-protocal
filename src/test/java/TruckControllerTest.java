@@ -15,11 +15,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.example.Database.*;
 
 public class TruckControllerTest {
+    private static Socket socket_ups_world;
     private static Socket socket_amazon_world;
     private static long worldId;
 
@@ -30,8 +32,8 @@ public class TruckControllerTest {
 
         try {
             // UConnect
-            socket_amazon_world = new Socket(worldServerIP, worldServerPort);
-            TruckController truckController = new TruckController(socket_amazon_world);
+            socket_ups_world = new Socket(worldServerIP, worldServerPort);
+            TruckController truckController = new TruckController(socket_ups_world);
 
             // Send UConnect message
             truckController.sendUConnect(null, 5);
@@ -55,7 +57,7 @@ public class TruckControllerTest {
 
     @AfterAll
     public static void tearDown() throws IOException {
-        socket_amazon_world.close();
+        socket_ups_world.close();
     }
 
     @Test
@@ -73,21 +75,20 @@ public class TruckControllerTest {
             aInitWarehouse.build();
             builder.addInitwh(aInitWarehouse);
 
-            Socket socket_amazon_world_new = new Socket(worldServerIP, amazonServerPort);
-            OutputStream outputStream = socket_amazon_world_new.getOutputStream();
+            socket_amazon_world = new Socket(worldServerIP, amazonServerPort);
+            OutputStream outputStream = socket_amazon_world.getOutputStream();
             CodedOutputStream codedOutputStream = CodedOutputStream.newInstance(outputStream);
             Message msg = builder.build();
             codedOutputStream.writeUInt32NoTag(msg.toByteArray().length);
             msg.writeTo(codedOutputStream);
             codedOutputStream.flush();
 
-            InputStream inputStream = socket_amazon_world_new.getInputStream();
+            InputStream inputStream = socket_amazon_world.getInputStream();
             CodedInputStream codedInputStream = CodedInputStream.newInstance(inputStream);
             WorldAmazon.AConnected aConnected = WorldAmazon.AConnected.parseFrom(codedInputStream.readByteArray());
 
             assertEquals("connected!", aConnected.toBuilder().getResult());
             System.out.println("AConnected successfully");
-
 
 
             // Send pickup command
@@ -102,13 +103,13 @@ public class TruckControllerTest {
                 // 执行数据库操作，例如插入一条新的 truck 记录
                 Truck newTruck = truckMapper.getMinPackageTruck();
 
-                truckId = newTruck.getTruckId();
+                truckId = newTruck.getTruckId();  // truckId = 5
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            TruckController truckController = new TruckController(socket_amazon_world);
+            TruckController truckController = new TruckController(socket_ups_world);
             TruckReceiver truckReceiver = truckController.truckReceiver;
             truckController.truckSender.sendUCommandUGoPickUp(truckId, whId, seqNum);
 
@@ -120,22 +121,46 @@ public class TruckControllerTest {
             WorldUps.UFinished completion = uResponsesBuilder.getCompletions(0);
             System.out.println("Pickup completion received:" + completion);
 
+            //===========================g
+            System.out.println("Sending APutOnTruck message");
+
+            // 创建一个 APutOnTruck 消息
+            WorldAmazon.APutOnTruck.Builder aPutOnTruckBuilder = WorldAmazon.APutOnTruck.newBuilder();
+            aPutOnTruckBuilder.setWhnum(1);
+            aPutOnTruckBuilder.setTruckid(truckId);
+            aPutOnTruckBuilder.setShipid(9);
+            aPutOnTruckBuilder.setSeqnum(seqNum + 1); // 增加一个新的 seqNum 用于此消息
+            Message aPutOnTruckMsg = aPutOnTruckBuilder.build();
+
+            // 创建一个 ACommands 消息
+            WorldAmazon.ACommands.Builder aCommandsBuilder = WorldAmazon.ACommands.newBuilder();
+            aCommandsBuilder.addLoad(aPutOnTruckBuilder);
+            aCommandsBuilder.addAcks(seqNum); // 确认之前的消息
+
+            Message aCommandsMsg = aCommandsBuilder.build();
+            codedOutputStream.writeUInt32NoTag(aCommandsMsg.toByteArray().length);
+            aCommandsMsg.writeTo(codedOutputStream);
+            codedOutputStream.flush();
+
+            System.out.println("APutOnTruck message sent. Waiting for AResponses...");
+
+            // 等待 AResponses 确认
+            WorldAmazon.AResponses aResponses = WorldAmazon.AResponses.parseFrom(codedInputStream.readByteArray());
+            System.out.println("APutOnTruck AResponses received");
+            assertEquals(1, aResponses.getAcksCount());
+            assertEquals(seqNum + 1, aResponses.getAcks(0));
+
+            //===========================g
 
 
             // Send deliver command
-            int truckId_deliver = 1;
-            long packageId = 1;
-            int destinationX = 10;
-            int destinationY = 20;
-            long seqNum_deliver = 2;
-
             WorldUps.UDeliveryLocation deliveryLocation = WorldUps.UDeliveryLocation.newBuilder()
-                    .setPackageid(packageId)
-                    .setX(destinationX)
-                    .setY(destinationY)
+                    .setPackageid(9)
+                    .setX(10)
+                    .setY(10)
                     .build();
 
-            truckController.truckSender.sendUCommandUGoDeliver(truckId_deliver, deliveryLocation, seqNum_deliver);
+            truckController.truckSender.sendUCommandUGoDeliver(truckId, deliveryLocation, seqNum + 1);
 
             System.out.println("Deliver UCommands sent");
 
@@ -145,8 +170,6 @@ public class TruckControllerTest {
             WorldUps.UFinished deliveryMade = uResponsesBuilder_deliver.getCompletions(0);
             System.out.println("Delivery completion received:" + deliveryMade);
 
-            // Close the new socket_amazon_world at the end of the test
-            socket_amazon_world_new.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -155,69 +178,45 @@ public class TruckControllerTest {
     }
 
 
-    private TruckMapper truckMapper;
-    private SqlSession sqlSession;
-    private User testUser;
-    private Package testPackage;
-    private Truck testTruck;
-
     @BeforeEach
-    public void insertTestData() {
+    public void deleteThenInsertTestData() {
+
         try (SqlSession sqlSession = MyBatisUtil.getSqlSession()) {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             PackagesMapper packagesMapper = sqlSession.getMapper(PackagesMapper.class);
             TruckMapper truckMapper = sqlSession.getMapper(TruckMapper.class);
 
-            // 插入测试数据到 user 表
+            // 删除表中的测试数据
+            userMapper.deleteUser("test_user");
+            truckMapper.deleteTruck(5);
+            packagesMapper.deletePackage(9);
+            sqlSession.commit();
+
+
+            // 插入测试数据到表
             User testUser = new User();
             testUser.setUserId("test_user");
             testUser.setPassword("test_password");
             userMapper.insertUser(testUser);
 
-            // 插入测试数据到 truck 表
             Truck testTruck = new Truck();
             testTruck.setTruckId(5);
             testTruck.setStatus("idle");
             testTruck.setPackageNum(1);
-
             truckMapper.insertTruck(testTruck);
 
-            // 插入测试数据到 packages 表
             Packages testPackage = new Packages();
             testPackage.setPackageId(9);
             testPackage.setTruckId(5);
             testPackage.setUserId("test_user");
             testPackage.setItemNum(1);
-
             packagesMapper.insertPackage(testPackage);
 
             sqlSession.commit();
+
         } catch (Exception e) {
             e.printStackTrace();
             fail("An exception occurred while inserting test data.");
-        }
-    }
-
-    @AfterEach
-    public void deleteTestData() {
-        try (SqlSession sqlSession = MyBatisUtil.getSqlSession()) {
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            PackagesMapper packagesMapper = sqlSession.getMapper(PackagesMapper.class);
-            TruckMapper truckMapper = sqlSession.getMapper(TruckMapper.class);
-
-            // 删除 user 表中的测试数据
-            userMapper.deleteUser("test_user");
-
-            // 删除 truck 表中的测试数据
-            truckMapper.deleteTruck(5);
-
-            // 删除 packages 表中的测试数据
-            packagesMapper.deletePackage(9);
-
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("An exception occurred while deleting test data.");
         }
     }
 }
