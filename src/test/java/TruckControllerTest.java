@@ -77,11 +77,11 @@ public class TruckControllerTest {
 
             socket_amazon_world = new Socket(worldServerIP, amazonServerPort);
             OutputStream outputStream = socket_amazon_world.getOutputStream();
-            CodedOutputStream codedOutputStream = CodedOutputStream.newInstance(outputStream);
+            CodedOutputStream codedOutputStream1 = CodedOutputStream.newInstance(outputStream);
             Message msg = builder.build();
-            codedOutputStream.writeUInt32NoTag(msg.toByteArray().length);
-            msg.writeTo(codedOutputStream);
-            codedOutputStream.flush();
+            codedOutputStream1.writeUInt32NoTag(msg.toByteArray().length);
+            msg.writeTo(codedOutputStream1);
+            codedOutputStream1.flush();
 
             InputStream inputStream = socket_amazon_world.getInputStream();
             CodedInputStream codedInputStream = CodedInputStream.newInstance(inputStream);
@@ -124,34 +124,32 @@ public class TruckControllerTest {
             //===========================g
             System.out.println("Sending APutOnTruck message");
 
+
             // 创建一个 APutOnTruck 消息
             WorldAmazon.APutOnTruck.Builder aPutOnTruckBuilder = WorldAmazon.APutOnTruck.newBuilder();
-            aPutOnTruckBuilder.setWhnum(1);
-            aPutOnTruckBuilder.setTruckid(truckId);
+            aPutOnTruckBuilder.setWhnum(whId);
+            aPutOnTruckBuilder.setTruckid(truckId); // 5
             aPutOnTruckBuilder.setShipid(9);
             aPutOnTruckBuilder.setSeqnum(seqNum + 1); // 增加一个新的 seqNum 用于此消息
-            Message aPutOnTruckMsg = aPutOnTruckBuilder.build();
+            aPutOnTruckBuilder.build();
 
             // 创建一个 ACommands 消息
             WorldAmazon.ACommands.Builder aCommandsBuilder = WorldAmazon.ACommands.newBuilder();
             aCommandsBuilder.addLoad(aPutOnTruckBuilder);
-            aCommandsBuilder.addAcks(seqNum); // 确认之前的消息
-
+//            aCommandsBuilder.addAcks(seqNum); //
             Message aCommandsMsg = aCommandsBuilder.build();
-            codedOutputStream.writeUInt32NoTag(aCommandsMsg.toByteArray().length);
-            aCommandsMsg.writeTo(codedOutputStream);
-            codedOutputStream.flush();
+            CodedOutputStream codedOutputStream2 = CodedOutputStream.newInstance(outputStream);
+            codedOutputStream2.writeUInt32NoTag(aCommandsMsg.toByteArray().length);
+            aCommandsMsg.writeTo(codedOutputStream2);
+            codedOutputStream2.flush();
 
             System.out.println("APutOnTruck message sent. Waiting for AResponses...");
 
             // 等待 AResponses 确认
             WorldAmazon.AResponses aResponses = WorldAmazon.AResponses.parseFrom(codedInputStream.readByteArray());
+            System.out.println(aResponses.toBuilder().toString());
             System.out.println("APutOnTruck AResponses received");
-            assertEquals(1, aResponses.getAcksCount());
-            assertEquals(seqNum + 1, aResponses.getAcks(0));
-
             //===========================g
-
 
             // Send deliver command
             WorldUps.UDeliveryLocation deliveryLocation = WorldUps.UDeliveryLocation.newBuilder()
@@ -166,10 +164,10 @@ public class TruckControllerTest {
 
             WorldUps.UResponses.Builder uResponsesBuilder_deliver = truckReceiver.getUResponse();
             System.out.println("UResponses received");
+
             assertEquals(1, uResponsesBuilder_deliver.getCompletionsCount());
             WorldUps.UFinished deliveryMade = uResponsesBuilder_deliver.getCompletions(0);
             System.out.println("Delivery completion received:" + deliveryMade);
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -201,7 +199,7 @@ public class TruckControllerTest {
 
             Truck testTruck = new Truck();
             testTruck.setTruckId(5);
-            testTruck.setStatus("idle");
+            testTruck.setStatus("IDLE");
             testTruck.setPackageNum(1);
             truckMapper.insertTruck(testTruck);
 

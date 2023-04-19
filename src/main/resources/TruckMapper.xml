@@ -20,7 +20,7 @@
 
     <select id="getMinPackageTruck" resultMap="TruckResultMap">
         SELECT * FROM truck
-        WHERE status IN ('idle', 'delivering')
+        WHERE status IN ('IDLE', 'DELIVERING')
         ORDER BY packageNum
         LIMIT 1;
     </select>
