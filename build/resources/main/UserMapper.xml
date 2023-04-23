@@ -7,6 +7,13 @@
         <result property="password" column="password"/>
     </resultMap>
 
+    <insert id="createUserTable">
+        CREATE TABLE IF NOT EXISTS  "user" (
+                              "userId" VARCHAR(255)  PRIMARY KEY,
+                              password VARCHAR(255) NOT NULL
+        )
+    </insert>
+
     <select id="getUserById" resultMap="UserResultMap">
         SELECT * FROM "user" WHERE "userId" = #{userId}
     </select>

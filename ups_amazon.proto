@@ -18,7 +18,7 @@ message AProduct{
   required int64 id = 1;
   // A description of the product.
   required string description = 2;
-  // The quantity of the product.
+  // The quantity of the product.todo
   required int32 count = 3;
 }
 
@@ -35,10 +35,11 @@ message UAResponseConnectUpsUserId{
   repeated int64 acks = 2;
 }
 
+
 message AUCallTruck{
   // A repeated field of products that must be delivered by UPS.
   repeated AProduct things = 1;
-  // The unique identifier of the shipment, which is the same in Ups' packageId.
+  // The unique identifier of the shipment, which is the same in Ups' packageId.todo 一对多？
   required int64 shipid = 2;
   // The ID of the warehouse where the products are located.
   required int32 whid = 3;

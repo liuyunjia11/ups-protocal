@@ -6,6 +6,10 @@ import java.util.List;
 
 public interface PackagesMapper {
 
+    void createPackagesTable();
+
+    void dropPackagesTable();
+
 //    @Select("SELECT * FROM package WHERE packageId = #{packageId}")
     Packages getPackageById(Integer packageId);
 

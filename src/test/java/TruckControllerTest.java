@@ -27,7 +27,7 @@ public class TruckControllerTest {
 
     @BeforeAll
     public static void setUpUConnect() {
-        String worldServerIP = "vcm-32197.vm.duke.edu";
+        String worldServerIP = "vcm-30970.vm.duke.edu";
         int worldServerPort = 12345;
 
         try {
@@ -62,7 +62,7 @@ public class TruckControllerTest {
 
     @Test
     public void testUpsInit() {
-        String worldServerIP = "vcm-32197.vm.duke.edu";
+        String worldServerIP = "vcm-30970.vm.duke.edu";
         int amazonServerPort = 23456;
 
         try {
@@ -102,7 +102,7 @@ public class TruckControllerTest {
 
                 // 执行数据库操作，例如插入一条新的 truck 记录
                 Truck newTruck = truckMapper.getMinPackageTruck();
-
+                //todo: 选择truck的方案？worldid自己给定？
                 truckId = newTruck.getTruckId();  // truckId = 5
 
             } catch (Exception e) {
@@ -183,6 +183,12 @@ public class TruckControllerTest {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             PackagesMapper packagesMapper = sqlSession.getMapper(PackagesMapper.class);
             TruckMapper truckMapper = sqlSession.getMapper(TruckMapper.class);
+
+            //新建表
+            userMapper.createUserTable();
+            truckMapper.createTruckTable();
+            packagesMapper.createPackagesTable();
+            sqlSession.commit();
 
             // 删除表中的测试数据
             userMapper.deleteUser("test_user");

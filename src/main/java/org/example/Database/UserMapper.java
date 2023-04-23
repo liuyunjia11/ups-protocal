@@ -5,6 +5,11 @@ import org.apache.ibatis.annotations.*;
 
 public interface UserMapper {
 
+    void dropUserTable();
+
+    //create table
+    void createUserTable();
+
     //@Select("SELECT * FROM user WHERE userId = #{userId}")
     User getUserById(String userId);
 

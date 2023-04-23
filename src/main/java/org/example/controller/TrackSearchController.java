@@ -1,5 +1,7 @@
 package org.example.controller;
 
-public class TrackSearchController {
+import org.example.Database.UserMapper;
+
+public class TrackSearchController{
 
 }

@@ -19,6 +19,7 @@
 
 
 <script>
+import axios from "axios";
 export default {
     data() {
         return {
@@ -27,12 +28,31 @@ export default {
         }
     },
     methods: {
-        submitRegistration() {
-            // TODO: Implement registration API call
-            console.log('Username:', this.username, 'Password:', this.password);
+      async submitRegistration() {
+        // TODO: Implement registration API call
+        try {
+            const response = await axios.post("${this.HOST}/register", {
+            Username: this.username,
+            Password: this.password,
+          });
+
+          if (response.status === 200) {
+            // 注册成功，重定向到登录页面
+            //this.$router.push("/login");
+            alert("Registration failed, please try again");
+          } else {
+            // 显示错误信息
+            //alert("Registration failed, please try again");
+          }
+        } catch (error) {
+          // 处理请求错误
+          console.error("Registration failed:", error);
+          alert(error);
         }
-    }
-}
+      },
+    },
+            //console.log('Username:', this.username, 'Password:', this.password);
+};
 </script>
 
 

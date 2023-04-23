@@ -10,6 +10,16 @@
     </resultMap>
 
     <!-- ... -->
+    <insert id="createPackagesTable">
+        CREATE TABLE IF NOT EXISTS packages(
+              packageId int  primary key,
+              truckId int,
+              userId VARCHAR(255),
+              "itemNum" int default 0,
+              foreign key (userId) references  "user"("userId") on update cascade on delete  set null,
+              foreign key (truckId) references truck (truckId)  on update cascade on delete  set null
+        )
+    </insert>
     <select id="getPackageById" resultMap="PackageResultMap">
         SELECT * FROM packages WHERE packageId = #{packageId}
     </select>

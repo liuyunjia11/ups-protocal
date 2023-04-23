@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface TruckMapper {
 
+    void dropTruckTable();
+    void createTruckTable();
+
     //@Select("SELECT * FROM truck WHERE truckId = #{truckId}")
     Truck getTruckById(Integer truckId);
 

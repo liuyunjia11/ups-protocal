@@ -9,6 +9,13 @@
         <result property="packageNum" column="packageNum"/>
     </resultMap>
 
+    <insert id="createTruckTable">
+        CREATE TABLE IF NOT EXISTS truck(
+                                               truckId int  primary key,
+                                               status VARCHAR(20),
+                                               packageNum int default 0
+        )
+    </insert>
 
     <select id="getTruckById" resultMap="TruckResultMap">
         SELECT * FROM truck WHERE truckId = #{truckId}
