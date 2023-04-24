@@ -34,7 +34,7 @@ public class TruckControllerTest {
             socket_ups_world = new Socket(worldServerIP, worldServerPort);
             TruckController truckController = new TruckController(socket_ups_world);
 
-            // Send UConnect message
+            // Send message11111111111111//////////u-w
             truckController.sendUConnect(null, 5);
 
             // Receive UConnected message
@@ -47,6 +47,7 @@ public class TruckControllerTest {
 
             // Get worldId from UConnected message
             worldId = truckController.getUConnectedWorldId();
+            /////////////////////////////////////////
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,6 +70,7 @@ public class TruckControllerTest {
             WorldAmazon.AConnect.Builder builder = WorldAmazon.AConnect.newBuilder();
             builder.setWorldid(worldId);
             builder.setIsAmazon(true);
+            ////////???? ?
             WorldAmazon.AInitWarehouse.Builder aInitWarehouse = WorldAmazon.AInitWarehouse.newBuilder();
             aInitWarehouse.setX(1).setY(1).setId(1);
             aInitWarehouse.build();
@@ -76,14 +78,17 @@ public class TruckControllerTest {
 
             socket_amazon_world = new Socket(worldServerIP, amazonServerPort);
             OutputStream outputStream = socket_amazon_world.getOutputStream();
+            /////////发
             CodedOutputStream codedOutputStream1 = CodedOutputStream.newInstance(outputStream);
             Message msg = builder.build();
             codedOutputStream1.writeUInt32NoTag(msg.toByteArray().length);
             msg.writeTo(codedOutputStream1);
             codedOutputStream1.flush();
+            ///////////
 
             InputStream inputStream = socket_amazon_world.getInputStream();
             CodedInputStream codedInputStream = CodedInputStream.newInstance(inputStream);
+            /////read?
             WorldAmazon.AConnected aConnected = WorldAmazon.AConnected.parseFrom(codedInputStream.readByteArray());
 
             assertEquals("connected!", aConnected.toBuilder().getResult());
@@ -101,7 +106,6 @@ public class TruckControllerTest {
 
                 // 执行数据库操作，例如插入一条新的 truck 记录
                 Truck newTruck = truckMapper.getMinPackageTruck();
-                //todo: 选择truck的方案？worldid自己给定？
                 truckId = newTruck.getTruckId();  // truckId = 5
 
             } catch (Exception e) {
