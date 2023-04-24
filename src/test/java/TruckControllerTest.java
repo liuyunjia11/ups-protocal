@@ -4,7 +4,7 @@ import com.google.protobuf.Message;
 import org.apache.ibatis.session.SqlSession;
 import org.example.Database.Truck;
 import org.example.Database.TruckMapper;
-import org.example.MyBatisUtil;
+import org.example.Utils.MyBatisUtil;
 import org.example.Receiver.TruckReceiver;
 import org.example.controller.TruckController;
 import org.example.protocol.WorldAmazon;
@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.example.Database.*;

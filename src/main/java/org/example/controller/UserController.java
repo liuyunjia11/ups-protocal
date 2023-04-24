@@ -3,7 +3,7 @@ package org.example.controller;
 import org.apache.ibatis.session.SqlSession;
 import org.example.Database.User;
 import org.example.Database.UserMapper;
-import org.example.MyBatisUtil;
+import org.example.Utils.MyBatisUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

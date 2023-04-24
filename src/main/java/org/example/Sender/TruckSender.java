@@ -2,10 +2,6 @@ package org.example.Sender;
 
 import com.google.protobuf.CodedOutputStream;
 import com.google.protobuf.Message;
-import org.apache.ibatis.session.SqlSession;
-import org.example.Database.Truck;
-import org.example.Database.TruckMapper;
-import org.example.MyBatisUtil;
 import org.example.protocol.WorldUps;
 
 import java.io.IOException;
