@@ -10,6 +10,8 @@ public interface TruckMapper {
     void dropTruckTable();
     void createTruckTable();
 
+    void updateTruckStatus(String status,Integer truckId);
+
     //@Select("SELECT * FROM truck WHERE truckId = #{truckId}")
     Truck getTruckById(Integer truckId);
 
@@ -27,7 +29,6 @@ public interface TruckMapper {
 
     //@Select("SELECT * FROM truck WHERE status IN ('idle', 'delivering') ORDER BY packageNum LIMIT 1;")
     Truck getMinPackageTruck();
-
 
 
 

@@ -23,6 +23,8 @@ public interface PackagesMapper {
 //    @Update("UPDATE package SET truckId = #{truckId}, userId = #{userId}, itemNum = #{itemNum} WHERE packageId = #{packageId}")
     void updatePackage(Packages pkg);
 
+    void updatePackageTruckId (Integer packageId, Integer truckId);
+
 //    @Delete("DELETE FROM package WHERE packageId = #{packageId}")
     void deletePackage(Integer packageId);
 }

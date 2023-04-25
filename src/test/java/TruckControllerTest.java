@@ -206,18 +206,18 @@ public class TruckControllerTest {
             testUser.setPassword("test_password");
             userMapper.insertUser(testUser);
 
-            Truck testTruck = new Truck();
-            testTruck.setTruckId(5);
-            testTruck.setStatus("IDLE");
-            testTruck.setPackageNum(1);
-            truckMapper.insertTruck(testTruck);
-
-            Packages testPackage = new Packages();
-            testPackage.setPackageId(9);
-            testPackage.setTruckId(5);
-            testPackage.setUserId("test_user");
-            testPackage.setItemNum(1);
-            packagesMapper.insertPackage(testPackage);
+//            Truck testTruck = new Truck();
+//            testTruck.setTruckId(5);
+//            testTruck.setStatus("IDLE");
+//            testTruck.setPackageNum(1);
+//            truckMapper.insertTruck(testTruck);
+//
+//            Packages testPackage = new Packages();
+//            testPackage.setPackageId(9);
+//            testPackage.setTruckId(5);
+//            testPackage.setUserId("test_user");
+//            testPackage.setItemNum(1);
+//            packagesMapper.insertPackage(testPackage);
 
             sqlSession.commit();
 

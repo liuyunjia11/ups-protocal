@@ -45,6 +45,11 @@
         UPDATE truck SET status = #{status}, packageNum = #{packageNum} WHERE truckId = #{truckId}
     </update>
 
+
+    <update id="updateTruckStatus" parameterType="org.example.Database.Truck">
+        UPDATE truck SET status = #{status} WHERE truckId = #{truckId}
+    </update>
+
     <delete id="deleteTruck">
         DELETE FROM truck WHERE truckId = #{truckId}
     </delete>
