@@ -21,7 +21,7 @@ message UGoPickup{
   required int32 whid = 2;
   required int64 seqnum = 3;
 }
-//todo
+
 message UFinished{
   required int32 truckid = 1;
   required int32 x = 2;

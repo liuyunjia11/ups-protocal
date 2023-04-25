@@ -43,6 +43,10 @@
         UPDATE packages SET truckId = #{truckId}, userId = #{userId}, "itemNum" = #{itemNum} WHERE packageId = #{packageId}
     </update>
 
+    <update id="updatePackageTruckId" parameterType="org.example.Database.Packages">
+        UPDATE packages SET truckId = #{truckId} WHERE packageId = #{packageId}
+    </update>
+
     <delete id="deletePackage">
         DELETE FROM packages WHERE packageId = #{packageId}
     </delete>

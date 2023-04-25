@@ -6,6 +6,13 @@ public class Packages {
     private String userId;
     private Integer itemNum;
 
+    public Packages(Integer packageId, Integer truckId, String userId, Integer itemNum) {
+        this.packageId = packageId;
+        this.truckId = truckId;
+        this.userId = userId;
+        this.itemNum = itemNum;
+    }
+
     public void setPackageId(Integer packageId) {
         this.packageId = packageId;
     }
@@ -37,5 +44,6 @@ public class Packages {
     public Integer getPackageNum() {
         return itemNum;
     }
+
 // Getters and setters
 }

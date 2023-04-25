@@ -18,7 +18,7 @@ message AProduct{
   required int64 id = 1;
   // A description of the product.
   required string description = 2;
-  // The quantity of the product.todo
+  // The quantity of the product.
   required int32 count = 3;
 }
 

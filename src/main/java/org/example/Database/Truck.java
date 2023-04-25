@@ -29,5 +29,6 @@ public class Truck {
     private String status;
     private Integer packageNum;
     // Getters and setters
+
 }
 
