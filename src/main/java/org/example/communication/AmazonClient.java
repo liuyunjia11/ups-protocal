@@ -3,6 +3,7 @@ package org.example.communication;
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
 import com.google.protobuf.Message;
+import org.example.protocol.UpsAmazon;
 
 import java.io.IOException;
 import java.net.ServerSocket;
