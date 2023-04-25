@@ -19,39 +19,47 @@
 
 
 <script>
-import axios from "axios";
+import { Register_UserController, UserController_Register } from "@/user_ups_pb";
+
+
 export default {
     data() {
         return {
-            username: '',
-            password: ''
-        }
+            username: "",
+            password: "",
+        };
     },
     methods: {
-      async submitRegistration() {
-        // TODO: Implement registration API call
-        try {
-            const response = await axios.post("${this.HOST}/register", {
-            Username: this.username,
-            Password: this.password,
-          });
+        async submitRegistration() {
+            console.log("submitRegistration called");
 
-          if (response.status === 200) {
-            // 注册成功，重定向到登录页面
-            //this.$router.push("/login");
-            alert("Registration failed, please try again");
-          } else {
-            // 显示错误信息
-            //alert("Registration failed, please try again");
-          }
-        } catch (error) {
-          // 处理请求错误
-          console.error("Registration failed:", error);
-          alert(error);
-        }
-      },
+            const registerRequest = new Register_UserController();
+            registerRequest.setUpsuserid(this.username);
+            registerRequest.setUpspassword(this.password);
+
+            await this.$socket.connect();
+            this.$socket.send("register", registerRequest);
+
+            this.$socket.onMessage((data) => {
+                console.log("Received response from server");
+                if (data.action === "registerResponse") {
+                    const registerResponse = UserController_Register.deserializeBinary(
+                        new Uint8Array(data.payload)
+                    );
+                    const ack = registerResponse.getAcks();
+
+                    if (ack === "success") {
+                        console.log("Registration successful, navigating to login");
+                        this.$router.push("/login");
+                    } else {
+                        alert("Registration failed, please try again");
+                    }
+                    this.$socket.close();
+                }
+            });
+        },
+
     },
-            //console.log('Username:', this.username, 'Password:', this.password);
 };
 </script>
 

@@ -21,6 +21,9 @@
 
 
 <script>
+
+import { Login_UserController, UserController_Login } from "@/user_ups_pb";
+
 export default {
     data() {
         return {
@@ -29,9 +32,33 @@ export default {
         }
     },
     methods: {
-        submitLogin() {
-            // TODO: Implement login API call
-            console.log('Username:', this.username, 'Password:', this.password);
+         async submitLogin() {
+             console.log("submitLogin called");
+
+             const loginRequest = new Login_UserController();
+             loginRequest.setUpsuserid(this.username);
+             loginRequest.setUpspassword(this.password);
+
+             await this.$socket.connect();
+             this.$socket.send("login", loginRequest);
+
+             this.$socket.onMessage((data) => {
+                 console.log("Received response from server");
+                 if (data.action === "loginResponse") {
+                     const loginResponse = UserController_Login.deserializeBinary(
+                         new Uint8Array(atob(data.payload))
+                     );
+                     const ack = loginResponse.getAcks();
+
+                     if (ack === "success") {
+                         console.log("Login successful, navigating to dashboard");
+                         this.$router.push("/dashboard");
+                     } else {
+                         alert("Login failed, please check your credentials and try again");
+                     }
+                     this.$socket.close();
+                 }
+             });
         }
     }
 }

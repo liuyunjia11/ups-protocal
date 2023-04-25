@@ -3,19 +3,17 @@ package org.example.communication;
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
 import com.google.protobuf.Message;
-import org.example.protocol.UpsAmazon;
-import org.example.protocol.WorldAmazon;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class AmazonClient {
-    private  Socket socket;
+    private Socket socket;
     private CodedInputStream codedInputStream;
     private CodedOutputStream codedOutputStream;
 
-    public  AmazonClient(int myPortNum) throws IOException {
+    public AmazonClient(int myPortNum) throws IOException {
         socket = new ServerSocket(myPortNum).accept();
     }
 

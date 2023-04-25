@@ -1,6 +1,5 @@
 package org.example.communication;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.example.Database.PackagesMapper;
 import org.example.Database.TruckMapper;
 import org.example.Database.UserMapper;
@@ -8,8 +7,6 @@ import org.example.Handler.ACommandHandler;
 import org.example.Handler.SenderHandler;
 import org.example.Handler.WCommandHandler;
 import org.example.Utils.MyBatisUtil;
-import org.example.controller.TruckController;
-import org.example.protocol.UpsAmazon;
 import org.example.protocol.WorldUps;
 
 import java.io.IOException;
@@ -17,8 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
-
-import static org.example.Utils.MyBatisUtil.getSqlSession;
 
 public class UpsServer {
     public static int WORD_ID;

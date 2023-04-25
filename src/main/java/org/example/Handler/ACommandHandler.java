@@ -1,12 +1,7 @@
 package org.example.Handler;
 
-import org.example.Database.Packages;
 import org.example.Database.Truck;
 import org.example.Utils.SeqUtils;
-import org.example.communication.AmazonClient;
-import org.example.controller.TruckController;
-import org.example.protocol.UpsAmazon;
-import org.example.protocol.WorldAmazon;
 import org.example.protocol.WorldUps;
 
 import java.io.IOException;

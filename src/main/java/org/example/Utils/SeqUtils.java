@@ -4,7 +4,7 @@ public class SeqUtils {
     private static SeqUtils seqUtils;
     private long value;
 
-    private  SeqUtils(){
+    private SeqUtils(){
         value = 0;
     }
 

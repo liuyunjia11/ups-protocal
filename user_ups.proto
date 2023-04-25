@@ -18,6 +18,7 @@ message AProduct{
 
 message UserController_Login {
   repeated AProduct things = 1;
+  required string acks = 2;
 }
 
 message UserController_Register {
@@ -25,11 +26,11 @@ message UserController_Register {
 }
 
 message TrackPackageRequest {
-  required int64 package_id = 1;
+  optional int64 package_id = 1;
 }
 
 message TrackPackageResponse {
-  required string status = 1;
+  optional string status = 1;
 }
 
 message UpdateDestinationRequest {
