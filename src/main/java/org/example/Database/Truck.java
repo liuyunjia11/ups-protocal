@@ -1,6 +1,20 @@
 package org.example.Database;
 
 public class Truck {
+    public Truck() {
+    }
+
+    public Truck(Integer truckId, String status) {
+        this.truckId = truckId;
+        this.status = status;
+    }
+
+    public Truck(Integer truckId, String status, Integer packageNum) {
+        this.truckId = truckId;
+        this.status = status;
+        this.packageNum = packageNum;
+    }
+
     public Integer getTruckId() {
         return truckId;
     }

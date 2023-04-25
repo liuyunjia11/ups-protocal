@@ -32,7 +32,6 @@ public interface TruckMapper {
 
 
 
-
     void insertPackage(Packages pkg);
 
     void deleteTruckById(int truckId);

@@ -1,6 +1,7 @@
 package org.example.Handler;
 
 import org.example.Database.Truck;
+import org.example.Utils.ConstUtils;
 import org.example.controller.TruckController;
 import org.example.protocol.WorldUps;
 
@@ -17,11 +18,21 @@ public class UCommandHandler implements  Runnable{
         TruckController truckController = new TruckController();
         List<WorldUps.UInitTruck> initTrucks = truckController.initTrucks();
         for (WorldUps.UInitTruck truck : initTrucks){
-            truckMapper.insertTruck(new Truck());
+            truckMapper.insertTruck(new Truck(truck.getId(), ConstUtils.TRUCK_IDLE_STATUS));
         }
 
         //uconnct
         WorldUps.UConnect.Builder builder = WorldUps.UConnect.newBuilder();
+        builder.setIsAmazon(false);
+        builder.addAllTrucks(initTrucks);
+        try {
+            worldClient.writeToWorld(builder.build());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Uconnect error : " + e);
+        }
+
+        //
 
 
         while (true){
