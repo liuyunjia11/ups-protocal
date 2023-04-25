@@ -7,6 +7,7 @@ import org.example.Handler.ACommandHandler;
 import org.example.Handler.SenderHandler;
 import org.example.Handler.WCommandHandler;
 import org.example.Utils.MyBatisUtil;
+import org.example.protocol.UpsAmazon;
 import org.example.protocol.WorldUps;
 
 import java.io.IOException;
@@ -28,12 +29,12 @@ public class UpsServer {
 
     //uw
     public static Map<Long, WorldUps.UGoPickup> uGoPickupMap =  new ConcurrentHashMap<>();
-    public static  Map<Long, WorldUps.UGoDeliver> uGoDeliverMap = new ConcurrentHashMap<>();
+    public static Map<Long, WorldUps.UGoDeliver> uGoDeliverMap = new ConcurrentHashMap<>();
     public static Set<Long> uwACKSet = new CopyOnWriteArraySet<>();
     //ua
     public static Map<Long, UpsAmazon.UATruckArrived> uaTruckArrivedMap = new ConcurrentHashMap<>();
     public static Set<Long> uaACKSet = new CopyOnWriteArraySet<>();
-    public static  Map<Long, UpsAmazon.UAUpdatePackageStatus> uaUpdatePackageStatusMap =  new ConcurrentHashMap<>();
+    public static Map<Long, UpsAmazon.UAUpdatePackageStatus> uaUpdatePackageStatusMap =  new ConcurrentHashMap<>();
 
     public UpsServer(String toWorldHost, int toWorldPortNum, int myPortNum) throws IOException {
         //database init

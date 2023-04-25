@@ -2,6 +2,7 @@ package org.example.Handler;
 
 import org.example.Database.Truck;
 import org.example.Utils.SeqUtils;
+import org.example.protocol.UpsAmazon;
 import org.example.protocol.WorldUps;
 
 import java.io.IOException;
@@ -25,8 +26,8 @@ public class ACommandHandler implements  Runnable{
         System.out.println("store " + seqUtils.getValue() + " into map");
 
         //database
-        List<UpsAmazon.AProduct> aProductList = auCallTruck.getThingsList();
-        for (UpsAmazon.AProduct aProduct : aProductList){
+        List<UpsAmazon.AUProduct> aProductList = auCallTruck.getThingsList();
+        for (UpsAmazon.AUProduct aProduct : aProductList){
             packagesMapper.updatePackageTruckId(Integer.valueOf((int) aProduct.getId()), truck.getTruckId());
             truckMapper.updateTruckStatus("", truck.getTruckId());
         }
