@@ -27,4 +27,8 @@ public interface PackagesMapper {
 
 //    @Delete("DELETE FROM package WHERE packageId = #{packageId}")
     void deletePackage(Integer packageId);
+
+    List<Packages> getPackagesByTruckId(int truckId);
+
+    void updatePackageStatusByTruckId(@Param("status") String status, @Param("truckId") Integer truckId);
 }

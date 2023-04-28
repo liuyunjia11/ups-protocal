@@ -10,7 +10,7 @@ public interface TruckMapper {
     void dropTruckTable();
     void createTruckTable();
 
-    void updateTruckStatus(String status,Integer truckId);
+    void updateTruckStatus(@Param("status") String status, @Param("truckId") Integer truckId);
 
     //@Select("SELECT * FROM truck WHERE truckId = #{truckId}")
     Truck getTruckById(Integer truckId);

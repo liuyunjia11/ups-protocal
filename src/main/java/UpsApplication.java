@@ -1,3 +1,6 @@
+import org.apache.ibatis.session.SqlSession;
+import org.example.Database.TruckMapper;
+import org.example.Utils.MyBatisUtil;
 import org.example.communication.UpsServer;
 
 public class UpsApplication {
@@ -7,7 +10,6 @@ public class UpsApplication {
 
         final int myPortNum = 8080;
 
-        final int worldID;
 
 
         try {

@@ -8,13 +8,13 @@ import org.example.protocol.WorldUps;
 import java.io.IOException;
 import java.util.List;
 
-import static org.example.communication.UpsServer.truckMapper;
-import static org.example.communication.UpsServer.worldClient;
+//import static org.example.communication.UpsServer.truckMapper;
+//import static org.example.communication.UpsServer.worldClient;
 
-public class UCommandHandler implements Runnable{
-
+public class UCommandHandler implements  Runnable{
     @Override
-    public void run() {
+    public  void  run(){
+
 
     }
 }

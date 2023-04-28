@@ -13,16 +13,20 @@
     <insert id="createPackagesTable">
         CREATE TABLE IF NOT EXISTS packages(
               packageId int  primary key,
-              truckId int,
+              truckId int default -1,
               userId VARCHAR(255),
               "itemNum" int default 0,
+              status VARCHAR(255),
+              description VARCHAR(255),
+              destx int default  0,
+              desty int default 0,
               foreign key (userId) references  "user"("userId") on update cascade on delete  set null,
               foreign key (truckId) references truck (truckId)  on update cascade on delete  set null
         )
     </insert>
 
     <update id="dropPackagesTable">
-        DROP TABLE packages;
+        DROP TABLE IF EXISTS packages;
     </update>
 
 
@@ -34,17 +38,30 @@
         SELECT * FROM packages
     </select>
 
+    <select id="getPackagesByTruckId" resultMap="PackageResultMap">
+        SELECT * FROM packages
+        WHERE truckId = #{truckId} AND status = 'waiting'
+    </select>
+
     <insert id="insertPackage" parameterType="org.example.Database.Packages">
-        INSERT INTO packages (packageId, truckId, userId, "itemNum")
-        VALUES (#{packageId}, #{truckId}, #{userId}, #{itemNum})
+        INSERT INTO packages (packageId, truckId, userId, "itemNum",status, description, destx, desty)
+        VALUES (#{packageId}, #{truckId}, #{userId}, #{itemNum}, #{status}, #{description}, #{destx}, #{desty})
     </insert>
 
     <update id="updatePackage" parameterType="org.example.Database.Packages">
-        UPDATE packages SET truckId = #{truckId}, userId = #{userId}, "itemNum" = #{itemNum} WHERE packageId = #{packageId}
+        UPDATE packages SET truckId = #{truckId}, userId = #{userId}, "itemNum" = #{itemNum}, "status" = #{status},
+                            "description" = #{description}, "destx" = #{destx}, "desty" = #{desty}
+                        WHERE packageId = #{packageId}
     </update>
 
     <update id="updatePackageTruckId" parameterType="org.example.Database.Packages">
         UPDATE packages SET truckId = #{truckId} WHERE packageId = #{packageId}
+    </update>
+
+    <update id="updatePackageStatusByTruckId">
+        UPDATE packages
+        SET status = #{status, jdbcType=VARCHAR}
+        WHERE truckid = #{truckId, jdbcType=INTEGER} AND status = 'waiting'
     </update>
 
     <delete id="deletePackage">

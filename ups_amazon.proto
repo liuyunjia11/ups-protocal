@@ -9,7 +9,7 @@ message AUConnected{
   // The ID of the world that UPS must successfully connect to.
   required int64 worldid = 1;
   // The result of the connection attempt, whether successful or not.
-  required string result = 2;
+  required string result = 2; //success!
 }
 
 message AUProduct{
@@ -19,72 +19,58 @@ message AUProduct{
   required string description = 2;
   // The quantity of the product.
   required int32 count = 3;
+  // dest x, y
+  required int32 destX = 4;
+  required int32 destY = 5;
+  required int32 userid = 6;
 }
 
-//Optional, it's fine if the users are not willing to bind the upsId with Amazon
-message AURequestConnectUpsUserId{
-  // The user ID of the UPS user that must request to connect to Amazon.
-  required int64 UpsUserid = 1;
+
+message AURequestSendUserInfo{
+  required int32 userid = 1;
+  required string username = 2;
+  required string password = 3;
+  required int64 seqnum = 4;
 }
 
-message UAResponseConnectUpsUserId{
-  // A repeated field of errors that may occur during the request.
-  repeated Err error = 1;
-  // A repeated field of unique sequence numbers for the request acknowledgements.
-  repeated int64 acks = 2;
-}
 
 message AUCallTruck{
   // A repeated field of products that must be delivered by UPS.
   repeated AUProduct things = 1;
   // The unique identifier of the shipment, which is the same in Ups' packageId.
-  required int64 shipid = 2;
+  required int64 shipid = 2; //no need?
   // The ID of the warehouse where the products are located.
   required int32 whid = 3;
   // A unique sequence number for the request.
   required int64 seqnum = 4;
   // add x
-  required int32 x = 5;
+  required int32 wh_x = 5;
   // add y
-  required int32 y = 6;
-}
-
-message AUDeliveryLocation{
-  // The unique identifier of the shipment.
-  required int64 shipid = 1;
-  // The x-coordinate of the delivery location.
-  required int32 x = 2;
-  // The y-coordinate of the delivery location.
-  required int32 y = 3;
+  required int32 wh_y = 6;
 }
 
 message UATruckArrived{
   // The unique identifier of the truck that has arrived.
   required int32 truckid = 1;
-  // The unique identifier of the package that has been delivered.
-  required int64 packageid = 2; // to be discussed
   // A unique sequence number for the delivery.
-  required int64 seqnum = 3;
+  required int64 seqnum = 2;
   // need to be discussed
-  required int32 x = 5;
-  required int32 y = 6;
+  required int32 x = 3;
+  required int32 y = 4;
 }
 
 /*start loading*/
 message AUTruckGoLoad{
-  required int64 shipid = 1;
-  required int32 truckid = 2;
-  required int64 seqnum = 3;
+  required int32 truckid = 1;
+  required int64 seqnum = 2;
 }
 
-/*loaded finished, start to deliver*/
+/*all packages loaded finished, start to deliver*/
 message AUTruckGoDeliver{
   // The unique identifier of the truck that must deliver the packages.
   required int32 truckid = 1;
-  // A repeated field of delivery locations for the packages.
-  repeated AUDeliveryLocation packages = 2;
   // A unique sequence number for the request.
-  required int64 seqnum = 3;
+  required int64 seqnum = 2;
 }
 
 /*deliver made*/
@@ -132,12 +118,14 @@ message AUCommands{
   repeated AUTruckGoDeliver truckGoDeliver = 2;
   // A repeated field of requests to check the status of packages, which must be provided.
   repeated AURequestPackageStatus requestPackageStatus = 3;
+  repeated AURequestSendUserInfo userInfo = 4;
+  repeated AUTruckGoLoad loading = 5;
   // An optional field indicating that UPS may want to disconnect from Amazon's world.
-  optional bool disconnect = 4;
+  optional bool disconnect = 6;
   // A repeated field of errors that may occur during the requests.
-  repeated Err err = 5;
+  repeated Err err = 7;
   // A repeated field of unique sequence numbers for the request acknowledgements.
-  repeated int64 acks = 6;
+  repeated int64 acks = 8;
 }
 
 message UACommands{
@@ -145,7 +133,6 @@ message UACommands{
   repeated UATruckArrived truckArrived = 1;
   // A repeated field of notifications indicating the status of packages has been updated, which must be provided.
   repeated UAUpdatePackageStatus updatePackageStatus = 2;
-  //
   repeated UATruckDeliverMade delivered = 3;
   // An optional field indicating that all deliveries have been completed, which may be provided.
   optional bool finished = 4;

@@ -15,7 +15,7 @@
     </insert>
 
     <update id="dropUserTable">
-        DROP TABLE "user";
+        DROP TABLE IF EXISTS "user";
     </update>
 
     <select id="getUserById" resultMap="UserResultMap">

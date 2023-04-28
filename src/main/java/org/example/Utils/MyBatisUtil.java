@@ -1,5 +1,6 @@
 package org.example.Utils;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -29,17 +30,25 @@ public class MyBatisUtil {
     }
 
     public static void dropAllTables(){
-        getSqlSession().getMapper(PackagesMapper.class).dropPackagesTable();
-        getSqlSession().getMapper(UserMapper.class).dropUserTable();
-        getSqlSession().getMapper(TruckMapper.class).dropTruckTable();
-        getSqlSession().commit();
+        SqlSession sqlSession = MyBatisUtil.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        PackagesMapper packagesMapper = sqlSession.getMapper(PackagesMapper.class);
+        TruckMapper truckMapper = sqlSession.getMapper(TruckMapper.class);
+        packagesMapper.dropPackagesTable();
+        userMapper.dropUserTable();
+        truckMapper.dropTruckTable();
+        sqlSession.commit();
     }
 
     public static  void createAllTables(){
-        getSqlSession().getMapper(UserMapper.class).createUserTable();
-        getSqlSession().getMapper(TruckMapper.class).createTruckTable();
-        getSqlSession().getMapper(PackagesMapper.class).createPackagesTable();
-        getSqlSession().commit();
+        SqlSession sqlSession = MyBatisUtil.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        PackagesMapper packagesMapper = sqlSession.getMapper(PackagesMapper.class);
+        TruckMapper truckMapper = sqlSession.getMapper(TruckMapper.class);
+        userMapper.createUserTable();
+        truckMapper.createTruckTable();
+        packagesMapper.createPackagesTable();
+        sqlSession.commit();
     }
 
 }

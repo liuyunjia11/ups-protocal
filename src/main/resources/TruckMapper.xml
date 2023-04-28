@@ -18,7 +18,7 @@
     </insert>
 
     <update id="dropTruckTable">
-        DROP TABLE truck;
+        DROP TABLE IF EXISTS truck;
     </update>
 
     <select id="getTruckById" resultMap="TruckResultMap">
@@ -31,7 +31,7 @@
 
     <select id="getMinPackageTruck" resultMap="TruckResultMap">
         SELECT * FROM truck
-        WHERE status IN ('IDLE', 'DELIVERING')
+        WHERE status IN ('idle', 'delivering')
         ORDER BY packageNum
         LIMIT 1;
     </select>
@@ -45,9 +45,10 @@
         UPDATE truck SET status = #{status}, packageNum = #{packageNum} WHERE truckId = #{truckId}
     </update>
 
-
-    <update id="updateTruckStatus" parameterType="org.example.Database.Truck">
-        UPDATE truck SET status = #{status} WHERE truckId = #{truckId}
+    <update id="updateTruckStatus">
+        UPDATE truck
+        SET status = #{status, jdbcType=VARCHAR}
+        WHERE truckid = #{truckId, jdbcType=INTEGER}
     </update>
 
     <delete id="deleteTruck">

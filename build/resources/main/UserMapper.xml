@@ -14,6 +14,10 @@
         )
     </insert>
 
+    <update id="dropUserTable">
+        DROP TABLE IF EXISTS "user";
+    </update>
+
     <select id="getUserById" resultMap="UserResultMap">
         SELECT * FROM "user" WHERE "userId" = #{userId}
     </select>
